@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-class CodePrinter {
+class IOT {
   public:
     static void Blink();
     static void DHT();
