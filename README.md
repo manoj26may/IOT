@@ -27,7 +27,7 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
-  CodePrinter::Blink();  // Call any example
+  IOT::Blink();  // Call any example
 }
 
 void loop() {
