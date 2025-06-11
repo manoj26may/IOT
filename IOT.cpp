@@ -124,36 +124,41 @@ void IOT::ThingSpeakUpload() {
   Serial.println(F("}"));
 }
 
-void IOT::ThingSpeakReader() {
-  Serial.println(F("#include <ESP8266WiFi.h>"));
-  Serial.println(F("#include <DHT.h>"));
-  Serial.println(F("#include <ThingSpeak.h>"));
-  Serial.println(F("const char* ssid = \"your_SSID\";"));
-  Serial.println(F("const char* password = \"your_PASSWORD\";"));
-  Serial.println(F("#define DHTPIN D3"));
-  Serial.println(F("#define DHTTYPE DHT11"));
-  Serial.println(F("DHT dht(DHTPIN, DHTTYPE);"));
-  Serial.println(F("WiFiClient client;"));
-  Serial.println(F("unsigned long myChannelNumber = 2915464;"));
-  Serial.println(F("const char* myReadAPIKey = \"Your_Read_API_Key\";"));
-  Serial.println(F("void setup() {"));
-  Serial.println(F("  Serial.begin(115200);"));
-  Serial.println(F("  WiFi.begin(ssid, password);"));
-  Serial.println(F("  dht.begin();"));
-  Serial.println(F("  ThingSpeak.begin(client);"));
-  Serial.println(F("  while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.print(\".\"); }"));
-  Serial.println(F("  Serial.println(\"Connected.\");"));
-  Serial.println(F("}"));
-  Serial.println(F("void loop() {"));
-  Serial.println(F("  float h = dht.readHumidity();"));
-  Serial.println(F("  float t = dht.readTemperature();"));
-  Serial.println(F("  if (isnan(h) || isnan(t)) { Serial.println(\"Failed to read from DHT sensor!\"); delay(2000); return; }"));
-  Serial.println(F("  Serial.print(\"Temp: \" ); Serial.print(t); Serial.print(\" \xC2\xB0C, Humidity: \" ); Serial.print(h); Serial.println(\" %\");"));
-  Serial.println(F("  ThingSpeak.setField(1, t);"));
-  Serial.println(F("  ThingSpeak.setField(2, h);"));
-  Serial.println(F("  int x = ThingSpeak.writeFields(myChannelNumber, myReadAPIKey);"));
-  Serial.println(F("  if (x == 200) Serial.println(\"Data sent to ThingSpeak successfully\");"));
-  Serial.println(F("  else { Serial.print(\"Problem sending data. HTTP error code: \" ); Serial.println(x); }"));
-  Serial.println(F("  delay(20000);"));
+void IOT::ThingSpeakRead() {
+  Serial.println(F("#include <ESP8266WiFi.h>"));        
+  Serial.println(F("#include <ThingSpeak.h>")); 
+  Serial.println();
+  Serial.println(F("const char* ssid = \"xxxxxxxx\";")); 
+  Serial.println(F("const char* password = \"xxxxxxxxx\";")); 
+  Serial.println(F("const char* thingSpeakApiServer = \"api.thingspeak.com\";")); 
+  Serial.println();
+  Serial.println(F("unsigned long channelID = xxxxxxxxxxx;"));           
+  Serial.println(F("const char* readAPIKey = \"xxxxxxxxxx\";")); 
+  Serial.println();
+  Serial.println(F("WiFiClient client;")); 
+  Serial.println();
+  Serial.println(F("void setup() {")); 
+  Serial.println(F("  Serial.begin(115200);")); 
+  Serial.println(F("  WiFi.begin(ssid, password);")); 
+  Serial.println(F("  Serial.print(\"Connecting to WiFi\");")); 
+  Serial.println(F("  while (WiFi.status() != WL_CONNECTED) {")); 
+  Serial.println(F("    delay(1000);")); 
+  Serial.println(F("    Serial.print(\".\");")); 
+  Serial.println(F("  }")); 
+  Serial.println(F("  Serial.println(\"\\nConnected to WiFi!\");")); 
+  Serial.println(F("  ThingSpeak.begin(client);")); 
+  Serial.println(F("}")); 
+  Serial.println();
+  Serial.println(F("void loop() {")); 
+  Serial.println(F("  float temperature = ThingSpeak.readFloatField(channelID, 1, readAPIKey);")); 
+  Serial.println(F("  float humidity = ThingSpeak.readFloatField(channelID, 2, readAPIKey);")); 
+  Serial.println(F("  Serial.print(\"Temperature: \");")); 
+  Serial.println(F("  Serial.print(temperature);")); 
+  Serial.println(F("  Serial.println(\" °C\");")); 
+  Serial.println(F("  Serial.print(\"Humidity: \");")); 
+  Serial.println(F("  Serial.print(humidity);")); 
+  Serial.println(F("  Serial.println(\" %\");"));  
+  Serial.println(F("  delay(15000);"));  // 15-second delay per ThingSpeak rate limit
   Serial.println(F("}"));
 }
+
